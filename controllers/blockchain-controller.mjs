@@ -5,7 +5,12 @@ const getBlockchain = (req, res, next) => {
 };
 
 const createBlock = (req, res, next) => {
-  res.status(201).json({ success: true, data: 'Create Block funkar!' });
+  const lastBlockHash = '00000';
+  const currentBlockHash = '11111';
+  const data = req.body;
+
+  const block = blockchain.createBlock(lastBlockHash, currentBlockHash, data);
+  res.status(201).json({ success: true, data: block });
 };
 
 export { createBlock, getBlockchain };
