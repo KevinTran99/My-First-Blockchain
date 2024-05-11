@@ -5,11 +5,12 @@ export default class Blockchain {
   constructor() {
     this.chain = [];
 
-    this.createBlock('0', '0', []);
+    this.createBlock(Date.now(), '0', '0', []);
   }
 
-  createBlock(previousBlockHash, currentBlockHash, data) {
+  createBlock(timestamp, previousBlockHash, currentBlockHash, data) {
     const block = new Block(
+      timestamp,
       this.chain.length + 1,
       previousBlockHash,
       currentBlockHash,
@@ -25,8 +26,11 @@ export default class Blockchain {
     return this.chain.at(-1);
   }
 
-  hashBlock(previousBlockHash, currentBlockData) {
-    const stringToHash = previousBlockHash + JSON.stringify(currentBlockData);
+  hashBlock(timestamp, previousBlockHash, currentBlockData) {
+    const stringToHash =
+      timestamp.toString() +
+      previousBlockHash +
+      JSON.stringify(currentBlockData);
     const hash = createHash(stringToHash);
 
     return hash;

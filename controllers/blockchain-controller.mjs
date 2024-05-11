@@ -7,13 +7,16 @@ const getBlockchain = (req, res, next) => {
 const createBlock = (req, res, next) => {
   const lastBlock = blockchain.getLastBlock();
   const data = req.body;
+  const timestamp = Date.now();
 
   const currentBlockHash = blockchain.hashBlock(
+    timestamp,
     lastBlock.currentBlockHash,
     data
   );
 
   const block = blockchain.createBlock(
+    timestamp,
     lastBlock.currentBlockHash,
     currentBlockHash,
     data
