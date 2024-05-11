@@ -3,6 +3,8 @@ import Block from './Block.mjs';
 export default class Blockchain {
   constructor() {
     this.chain = [];
+
+    this.createBlock('0', '0', []);
   }
 
   createBlock(previousBlockHash, currentBlockHash, data) {
