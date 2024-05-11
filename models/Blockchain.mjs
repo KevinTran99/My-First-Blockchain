@@ -26,13 +26,30 @@ export default class Blockchain {
     return this.chain.at(-1);
   }
 
-  hashBlock(timestamp, previousBlockHash, currentBlockData) {
+  hashBlock(timestamp, previousBlockHash, currentBlockData, nonce) {
     const stringToHash =
       timestamp.toString() +
       previousBlockHash +
-      JSON.stringify(currentBlockData);
+      JSON.stringify(currentBlockData) +
+      nonce;
     const hash = createHash(stringToHash);
 
     return hash;
+  }
+
+  proofOfWork(timestamp, previousBlockHash, data) {
+    const DIFFICULTY_LEVEL = process.env.DIFFICULTY;
+    let nonce = 0;
+    let hash = this.hashBlock(timestamp, previousBlockHash, data, nonce);
+
+    while (
+      hash.substring(0, DIFFICULTY_LEVEL) !== '0'.repeat(DIFFICULTY_LEVEL)
+    ) {
+      nonce++;
+      hash = this.hashBlock(timestamp, previousBlockHash, data, nonce);
+    }
+
+    console.log(nonce);
+    return nonce;
   }
 }

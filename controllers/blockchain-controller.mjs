@@ -9,10 +9,17 @@ const createBlock = (req, res, next) => {
   const data = req.body;
   const timestamp = Date.now();
 
-  const currentBlockHash = blockchain.hashBlock(
+  const nonce = blockchain.proofOfWork(
     timestamp,
     lastBlock.currentBlockHash,
     data
+  );
+
+  const currentBlockHash = blockchain.hashBlock(
+    timestamp,
+    lastBlock.currentBlockHash,
+    data,
+    nonce
   );
 
   const block = blockchain.createBlock(
