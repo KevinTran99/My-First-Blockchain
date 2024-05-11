@@ -15,6 +15,8 @@ export const registerNode = (req, res, next) => {
   ) {
     blockchain.memberNodes.push(node.nodeUrl);
 
+    syncMembers(node.nodeUrl);
+
     res.status(201).json({
       success: true,
       statuscode: 201,
@@ -26,5 +28,23 @@ export const registerNode = (req, res, next) => {
       statusCode: 400,
       data: { message: `Node ${node.nodeUrl} is already registered or yours` },
     });
+  }
+};
+
+const syncMembers = (url) => {
+  const members = [...blockchain.memberNodes, blockchain.nodeUrl];
+
+  try {
+    members.forEach(async (member) => {
+      const body = { nodeUrl: member };
+
+      await fetch(`${url}/api/v1/members/register-node`, {
+        method: 'POST',
+        body: JSON.stringify(body),
+        headers: { 'Content-Type': 'application/json' },
+      });
+    });
+  } catch (error) {
+    console.log(error);
   }
 };
