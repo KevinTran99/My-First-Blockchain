@@ -9,7 +9,7 @@ const createBlock = (req, res, next) => {
   const data = req.body;
   const timestamp = Date.now();
 
-  const nonce = blockchain.proofOfWork(
+  const { nonce, difficulty } = blockchain.proofOfWork(
     timestamp,
     lastBlock.currentBlockHash,
     data
@@ -19,14 +19,16 @@ const createBlock = (req, res, next) => {
     timestamp,
     lastBlock.currentBlockHash,
     data,
-    nonce
+    nonce,
+    difficulty
   );
 
   const block = blockchain.createBlock(
     timestamp,
     lastBlock.currentBlockHash,
     currentBlockHash,
-    data
+    data,
+    difficulty
   );
 
   res.status(201).json({ success: true, data: block });
