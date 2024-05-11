@@ -21,6 +21,10 @@ export default class Blockchain {
     return block;
   }
 
+  getLastBlock() {
+    return this.chain.at(-1);
+  }
+
   hashBlock(previousBlockHash, currentBlockData) {
     const stringToHash = previousBlockHash + JSON.stringify(currentBlockData);
     const hash = createHash(stringToHash);
