@@ -34,4 +34,35 @@ const createBlock = (req, res, next) => {
   res.status(201).json({ success: true, data: block });
 };
 
-export { createBlock, getBlockchain };
+const synchronizeChain = (req, res, next) => {
+  const currentLength = blockchain.chain.length;
+  let maxLength = currentLength;
+  let longestChain = null;
+
+  blockchain.memberNodes.forEach(async (member) => {
+    const response = await fetch(`${member}/api/v1/blockchain`);
+    if (response.ok) {
+      const result = await response.json();
+
+      if (result.data.chain.length > maxLength) {
+        maxLength = result.data.chain.length;
+        longestChain = result.data.chain;
+      }
+
+      if (!longestChain) {
+        console.log('Blockchain is synced');
+      } else {
+        blockchain.chain = longestChain;
+        console.log(blockchain);
+      }
+    }
+  });
+
+  res.status(200).json({
+    success: true,
+    statusCode: 200,
+    data: { message: 'Synchronization is complete' },
+  });
+};
+
+export { createBlock, getBlockchain, synchronizeChain };
