@@ -1,3 +1,4 @@
+import { createHash } from '../utilities/crypto-lib.mjs';
 import Block from './Block.mjs';
 
 export default class Blockchain {
@@ -18,5 +19,12 @@ export default class Blockchain {
     this.chain.push(block);
 
     return block;
+  }
+
+  hashBlock(previousBlockHash, currentBlockData) {
+    const stringToHash = previousBlockHash + JSON.stringify(currentBlockData);
+    const hash = createHash(stringToHash);
+
+    return hash;
   }
 }
