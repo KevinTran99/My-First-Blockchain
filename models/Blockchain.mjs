@@ -86,4 +86,26 @@ export default class Blockchain {
       ? +difficulty - 1
       : +difficulty + 1;
   }
+
+  validateChain(blockchain) {
+    let isValid = true;
+
+    for (let i = 1; i < blockchain.length; i++) {
+      const block = blockchain[i];
+      console.log(block);
+      const previousBlock = blockchain[i - 1];
+
+      const hash = this.hashBlock(
+        block.timestamp,
+        previousBlock.currentBlockHash,
+        block.data
+      );
+
+      if (hash !== block.currentBlockHash) isValid = false;
+      if (block.previousBlockHash !== previousBlock.currentBlockHash)
+        isValid = false;
+    }
+
+    return isValid;
+  }
 }

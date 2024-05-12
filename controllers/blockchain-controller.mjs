@@ -49,7 +49,10 @@ const synchronizeChain = (req, res, next) => {
         longestChain = result.data.chain;
       }
 
-      if (!longestChain) {
+      if (
+        !longestChain ||
+        (longestChain && !blockchain.validateChain(longestChain))
+      ) {
         console.log('Blockchain is synced');
       } else {
         blockchain.chain = longestChain;
