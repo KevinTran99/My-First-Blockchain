@@ -17,6 +17,7 @@ export default class Blockchain {
     previousBlockHash,
     currentBlockHash,
     data,
+    nonce,
     difficulty
   ) {
     const block = new Block(
@@ -25,6 +26,7 @@ export default class Blockchain {
       previousBlockHash,
       currentBlockHash,
       data,
+      nonce,
       difficulty
     );
 
@@ -98,10 +100,13 @@ export default class Blockchain {
       const hash = this.hashBlock(
         block.timestamp,
         previousBlock.currentBlockHash,
-        block.data
+        block.data,
+        block.nonce,
+        block.difficulty
       );
 
       if (hash !== block.currentBlockHash) isValid = false;
+
       if (block.previousBlockHash !== previousBlock.currentBlockHash)
         isValid = false;
     }
